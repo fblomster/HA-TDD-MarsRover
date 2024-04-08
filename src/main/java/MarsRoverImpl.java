@@ -13,6 +13,18 @@ public class MarsRoverImpl implements MarsRover {
     @Override
     public void move(String commands){
         //TODO implement
+        if (commands == "f") {
+            y++;
+        }
+        else if (commands == "b") {
+            y--;
+        }
+        else if (commands == "l") {
+            x--;
+        }
+        else if (commands == "r") {
+            x++;
+        }
     }
 
     @Override
