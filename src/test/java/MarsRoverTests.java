@@ -71,27 +71,51 @@ public class MarsRoverTests {
     }
 
     @Test
-    public void testLongitudWraparound() {
+    public void testLongitudWraparoundEast() {
         // Arrange
-        MarsRover rover = new MarsRoverImpl(new Coordinates2D(355, 0), Direction.EAST);
+        MarsRover rover = new MarsRoverImpl(new Coordinates2D(1, 1), Direction.EAST);
 
         // Act
-        rover.move("ffffffff"); // Rör sig österut och går över gränsen för longitud
+        rover.move("ffffffff");
 
         // Assert
-        assertEquals(new Coordinates2D(3, 0), rover.getCurrentLocation());
+        assertEquals(new Coordinates2D(1, 1), rover.getCurrentLocation());
     }
 
     @Test
-    public void testLatitudeWraparound() {
+    public void testLongitudWraparoundWest() {
         // Arrange
-        MarsRover rover = new MarsRoverImpl(new Coordinates2D(0, 85), Direction.NORTH);
+        MarsRover rover = new MarsRoverImpl(new Coordinates2D(8, 1), Direction.WEST);
 
         // Act
-        rover.move("ffffffff"); // Rör sig norrut och går över gränsen för latitud
+        rover.move("ffffffff");
 
         // Assert
-        assertEquals(new Coordinates2D(0, -90), rover.getCurrentLocation());
+        assertEquals(new Coordinates2D(8, 1), rover.getCurrentLocation());
+    }
+
+    @Test
+    public void testLatitudeWraparoundNorth() {
+        // Arrange
+        MarsRover rover = new MarsRoverImpl(new Coordinates2D(1, 1), Direction.NORTH);
+
+        // Act
+        rover.move("ffffffff");
+
+        // Assert
+        assertEquals(new Coordinates2D(1, 1), rover.getCurrentLocation());
+    }
+
+    @Test
+    public void testLatitudeWraparoundSouth() {
+        // Arrange
+        MarsRover rover = new MarsRoverImpl(new Coordinates2D(1, 8), Direction.SOUTH);
+
+        // Act
+        rover.move("ffffffff"); // Move northward beyond the maximum latitude
+
+        // Assert
+        assertEquals(new Coordinates2D(1, 8), rover.getCurrentLocation());
     }
 
 

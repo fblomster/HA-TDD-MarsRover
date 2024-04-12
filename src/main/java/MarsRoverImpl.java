@@ -3,8 +3,8 @@ public class MarsRoverImpl implements MarsRover {
     private int x;
     private int y;
     private Direction direction;
-    private static final int LONGITUDE_MAX = 360;
-    private static final int LATITUDE_MAX = 90;
+    private static final int LONGITUDE_MAX = 8;
+    private static final int LATITUDE_MAX = 8;
 
     public MarsRoverImpl(Coordinates2D startingPosition, Direction startingDirection){
         x = startingPosition.x();
@@ -114,22 +114,23 @@ public class MarsRoverImpl implements MarsRover {
 
     private void handleWraparound() {
         // Longitud-wraparound
-        x = (x + LONGITUDE_MAX) % LONGITUDE_MAX;
+        if (x > LONGITUDE_MAX) {
+            x = 1;
+        } else if (x < 1) {
+            x = LONGITUDE_MAX;
+        }
 
         // Latitud-wraparound (vid polerna)
         if (y > LATITUDE_MAX) {
             // Placera rovern på motsatt sida av ekvatorn
-            y = -LATITUDE_MAX;
+            y = 1;
             // Vänd rovern söderut om den passerade norra polen
             direction = Direction.SOUTH;
-        } else if (y < -LATITUDE_MAX) {
+        } else if (y < 1) {
             // Placera rovern på motsatt sida av ekvatorn
             y = LATITUDE_MAX;
             // Vänd rovern norrut om den passerade södra polen
             direction = Direction.NORTH;
         }
     }
-
-
-
 }
