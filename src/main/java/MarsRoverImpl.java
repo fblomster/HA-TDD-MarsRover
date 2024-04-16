@@ -3,8 +3,10 @@ public class MarsRoverImpl implements MarsRover {
     private int x;
     private int y;
     private Direction direction;
-    private static final int LONGITUDE_MAX = 8;
+    private static final int LATITUDE_MIN = 1;
     private static final int LATITUDE_MAX = 8;
+    private static final int LONGITUDE_MIN = 1;
+    private static final int LONGITUDE_MAX = 8;
 
     public MarsRoverImpl(Coordinates2D startingPosition, Direction startingDirection){
         x = startingPosition.x();
@@ -38,10 +40,10 @@ public class MarsRoverImpl implements MarsRover {
     private void moveForward() {
         switch (direction) {
             case NORTH:
-                y++;
+                y--;
                 break;
             case SOUTH:
-                y--;
+                y++;
                 break;
             case EAST:
                 x++;
@@ -56,10 +58,10 @@ public class MarsRoverImpl implements MarsRover {
     private void moveBackward() {
         switch (direction) {
             case NORTH:
-                y--;
+                y++;
                 break;
             case SOUTH:
-                y++;
+                y--;
                 break;
             case EAST:
                 x--;
@@ -86,7 +88,6 @@ public class MarsRoverImpl implements MarsRover {
                 direction = Direction.SOUTH;
                 break;
         }
-        handleWraparound();
     }
 
     private void turnRight() {
@@ -104,7 +105,6 @@ public class MarsRoverImpl implements MarsRover {
                 direction = Direction.NORTH;
                 break;
         }
-        handleWraparound();
     }
 
     @Override
@@ -113,24 +113,36 @@ public class MarsRoverImpl implements MarsRover {
     }
 
     private void handleWraparound() {
-        // Longitud-wraparound
-        if (x > LONGITUDE_MAX) {
-            x = 1;
-        } else if (x < 1) {
-            x = LONGITUDE_MAX;
-        }
 
         // Latitud-wraparound (vid polerna)
         if (y > LATITUDE_MAX) {
-            // Placera rovern på motsatt sida av ekvatorn
-            y = 1;
+            y = LATITUDE_MIN;
+            if (x >= 1 && x <= 4) {
+                x += 4;
+            } else if (x >= 5 && x <= 8) {
+                x -= 4;
+            }
+
             // Vänd rovern söderut om den passerade norra polen
             direction = Direction.SOUTH;
-        } else if (y < 1) {
-            // Placera rovern på motsatt sida av ekvatorn
+        } else if (y < LATITUDE_MIN) {
             y = LATITUDE_MAX;
+            if (x >= 1 && x <= 4) {
+                x += 4;
+            } else if (x >= 5 && x <= 8) {
+                x -= 4;
+            }
             // Vänd rovern norrut om den passerade södra polen
             direction = Direction.NORTH;
         }
+        else {
+            // Longitud-wraparound
+        if (x > LONGITUDE_MAX) {
+            x = LONGITUDE_MIN;
+        } else if (x < LONGITUDE_MIN) {
+            x = LONGITUDE_MAX;
+        }
+        }
     }
+
 }
