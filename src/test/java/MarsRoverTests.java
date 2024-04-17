@@ -103,7 +103,7 @@ public class MarsRoverTests {
         rover.move("ffffffff");
 
         // Assert
-        assertEquals(new Coordinates2D(4, 1), rover.getCurrentLocation());
+        assertEquals(new Coordinates2D(4, 8), rover.getCurrentLocation());
     }
 
     @Test
@@ -112,7 +112,7 @@ public class MarsRoverTests {
         MarsRover rover = new MarsRoverImpl(new Coordinates2D(3, 8), Direction.SOUTH);
 
         // Act
-        rover.move("ffffffff"); // Move northward beyond the maximum latitude
+        rover.move("f");
 
         // Assert
         assertEquals(new Coordinates2D(7, 8), rover.getCurrentLocation());

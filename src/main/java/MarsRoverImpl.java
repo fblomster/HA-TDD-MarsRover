@@ -116,16 +116,6 @@ public class MarsRoverImpl implements MarsRover {
 
         // Latitud-wraparound (vid polerna)
         if (y > LATITUDE_MAX) {
-            y = LATITUDE_MIN;
-            if (x >= 1 && x <= 4) {
-                x += 4;
-            } else if (x >= 5 && x <= 8) {
-                x -= 4;
-            }
-
-            // Vänd rovern söderut om den passerade norra polen
-            direction = Direction.SOUTH;
-        } else if (y < LATITUDE_MIN) {
             y = LATITUDE_MAX;
             if (x >= 1 && x <= 4) {
                 x += 4;
@@ -134,6 +124,15 @@ public class MarsRoverImpl implements MarsRover {
             }
             // Vänd rovern norrut om den passerade södra polen
             direction = Direction.NORTH;
+        } else if (y < LATITUDE_MIN) {
+            y = LATITUDE_MIN;
+            if (x >= 1 && x <= 4) {
+                x += 4;
+            } else if (x >= 5 && x <= 8) {
+                x -= 4;
+            }
+            // Vänd rovern söderut om den passerade norra polen
+            direction = Direction.SOUTH;
         }
         else {
             // Longitud-wraparound
